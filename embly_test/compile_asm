@@ -1,0 +1,30 @@
+#! /bin/bash
+
+# Parse arguments
+if [ $# -ne 1 ]
+then
+	echo "compile_asm: missing operand file" > /dev/stderr
+	echo "usage: compile_asm FILE" > /dev/stderr
+	exit 1
+fi
+
+FILE=$1
+
+# File exists
+if [ ! -f $FILE ]
+then
+	echo "compile_asm: canno't find file: $FILE" > /dev/stderr
+	echo "usage: compile_asm FILE" > /dev/stderr
+	exit 2
+fi
+
+# Assemble
+nasm -f elf32 $FILE -o ${FILE%.asm}.o
+
+# Link
+ld -m elf_i386 -o ${FILE%.asm} ${FILE%.asm}.o 
+
+# Erase compiled .o file
+rm -f ${FILE%.asm}.o
+
+exit 0

@@ -1,5 +1,8 @@
 #! /bin/bash
 
+SOURCE_DIR=src
+BINARIES_DIR=bin
+
 # Parse arguments
 if [ $# -ne 1 ]
 then
@@ -13,7 +16,7 @@ FILE=$1
 # File exists
 if [ ! -f $FILE ]
 then
-	echo "compile_asm: canno't find file: $FILE" > /dev/stderr
+	echo "compile_asm: canno't find file: $SOURCE_DIR$FILE" > /dev/stderr
 	echo "usage: compile_asm FILE" > /dev/stderr
 	exit 2
 fi
@@ -22,7 +25,7 @@ fi
 nasm -f elf32 $FILE -o ${FILE%.asm}.o
 
 # Link
-ld -m elf_i386 -o ${FILE%.asm} ${FILE%.asm}.o 
+ld -m elf_i386 -o $BINARIES_DIR/$(echo ${FILE%.asm} | cut -d'/' -f2) ${FILE%.asm}.o 
 
 # Erase compiled .o file
 rm -f ${FILE%.asm}.o

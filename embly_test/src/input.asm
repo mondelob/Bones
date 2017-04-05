@@ -21,19 +21,40 @@ _start:
 	mov ecx, num1_msg
 	mov edx, num1_len
 	int 0x80
-	
 	mov eax, SYS_READ
 	mov ebx, STDIN
 	mov ecx, num1
 	mov edx, 5
 	int 0x80
 	
-	
-	
-	;; Sum and show results
 	mov eax, SYS_WRITE
 	mov ebx, STDOUT
-	mov ecx, num1
+	mov ecx, num2_msg
+	mov edx, num2_len
+	int 0x80
+	mov eax, SYS_READ
+	mov ebx, STDIN
+	mov ecx, num2
+	mov edx, 5
+	int 0x80
+
+	;; Sum and show results
+	mov eax, [num1]
+	sub eax, '0'
+	mov ebx, [num2]
+	sub ebx, '0'
+	add eax, ebx
+	add eax, '0'
+	mov [res], eax
+
+	mov eax, SYS_WRITE
+	mov ebx, STDOUT
+	mov ecx, res_msg
+	mov edx, res_len
+	int 0x80
+	mov eax, SYS_WRITE
+	mov ebx, STDOUT
+	mov ecx, res
 	mov edx, 5
 	int 0x80
 	
@@ -50,15 +71,17 @@ section .data
 	welcome_len equ $ - welcome_msg
 
 	num1_msg db "Number 1: "
-	
-	
 	num1_len equ $ - num1_msg
 	
 	num2_msg db "Number 2: "
 	num2_len equ $ - num2_msg
 
+	res_msg db "Result: "
+	res_len equ $ - res_msg
+
 ;; Input number variables
 section .bss
-	num1 resb 5
-	num2 resb 5
+	num1 resb 1
+	num2 resb 1
+	res resb 2
 	

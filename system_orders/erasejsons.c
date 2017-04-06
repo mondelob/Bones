@@ -1,4 +1,4 @@
-// Test ifdef
+// Erases al JSON's files from a directory
 
 #include <stdio.h>
 #include <stdlib.h> // EXIT_* Variables

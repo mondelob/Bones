@@ -28,6 +28,9 @@
 #define SSL_KEY "/var/tmp/ssl_server/ssl_server.key.pem"
 /* The SSL key */
 
+#define MAX_CONNECTIONS 10
+/* The maximum number of concurrent connections */
+
 #define MAX_DATA_SIZE 2048
 /* The maximum buffer for message */
 
@@ -77,6 +80,39 @@ init_socket (int port)
   /* Set socket to listening */
   
   return new_socket;
+  
+}
+
+int
+build_select_list (fd_set * socket_set, int mainsocket,
+  int clientsockets[MAX_CONNECTIONS])
+{
+  
+  /*
+   * Function to build the select and return the high socket
+   * Input: fd_set *
+   * Output: int
+  */
+  
+  int highsocket = mainsocket;
+  /* The highest socket, by default is the main socket */
+  
+  FD_ZERO(socket_set);
+  /* Clear the old set */
+  
+  FD_SET(mainsocket, socket_set);
+  /* Set the first socket */
+  
+  for (int i = 0; i < MAX_CONNECTIONS; i++)
+    if (clientsockets[i] > 0)
+    {
+      FD_SET(clientsockets[i], socket_set);
+      if (clientsockets[i] > highsocket)
+        highsocket = clientsockets[i];
+    }
+  /* Add all the client sockets and search for the higher one */
+  
+  return highsocket;
   
 }
 
@@ -201,11 +237,20 @@ main (int argc, char * argv[])
   int mainsock;
   /* The main socket */
   
+  fd_set socks;
+  /* Socket descriptors to wake up with select */
+  
+  struct timeval timeout;
+  /* The select timeout */
+  
   int clientsock;
   /* The connected client socket */
   
   struct sockaddr_in clientaddr;
   /* The client address */
+  
+  int connectedclients[MAX_CONNECTIONS];
+  /* The list of connections */
   
   uint addrlen;
   /* The address structure size */

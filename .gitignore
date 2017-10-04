@@ -1,2 +1,5 @@
 # Ignore all temporal files on compiling
 *.o
+
+# Ignore bin directories
+*/bin/*

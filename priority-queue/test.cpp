@@ -1,28 +1,33 @@
 #include <iostream>
+#include <ctime>
 #include "priorityqueue.hpp"
+#include "array.h" /* int test []*/
+
+#define MAX_TEST 999999
 
 using namespace std;
 
 int
 main(int argc, char * argv[]) {
 
+  clock_t begin, end;
+  double elapsed;
+
   PriorityQueue q;
-  q.Insert(3);
-  q.Insert(8);
-  q.Insert(4);
-  q.Insert(1);
-  q.Insert(9);
-  q.Insert(2);
-  q.Show();
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  cout << "RemoveMax(): " << q.RemoveMax() << "\n";
-  q.Show();
-  // cout << "RemoveMax(): " << q.RemoveMax() << "\n";
+
+  begin = clock();
+  for (int i = 0; i <= MAX_TEST; i++)
+    q.Insert(test[i]);
+  end = clock();
+  elapsed = double(end - begin) / CLOCKS_PER_SEC;
+  cout << "Elapsed time loading : " << elapsed << "s\n";
+
+  begin = clock();
+  for (int i = 0; i <= MAX_TEST; i++)
+    cerr << "out : " << q.RemoveMax() << "\n";
+  end = clock();
+  elapsed = double(end - begin) / CLOCKS_PER_SEC;
+  cout << "Elapsed time showing : " << elapsed << "s\n";
 
   return 0;
 

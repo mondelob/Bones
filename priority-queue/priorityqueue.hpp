@@ -102,7 +102,7 @@ PriorityQueue::Insert(int element) {
 
 int
 PriorityQueue::GetMax() {
-  if (this->heap[1] == -1)
+  if (this->size <= 1)
     throw std::underflow_error("no elements on heap");
   return this->heap[1];
 }

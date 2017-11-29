@@ -3,3 +3,6 @@
 
 # Ignore bin directories
 */bin/*
+
+# Ignore objects directories
+*/obj/*

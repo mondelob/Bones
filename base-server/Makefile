@@ -1,12 +1,12 @@
 # .SILENT
 
 CC=gcc
-CC_FLAGS=-Wall -std=c99
+CC_FLAGS=-Wall -std=c99 -pthread
 CC_DEPS=-Ilib
 CC_LIBRARY=-c
 CC_OUTPUT=-o
 
-DEPS=obj obj/konet.o
+DEPS=obj obj/konet.o obj/logger.o
 TARGETS=bin obj bin/test
 OBJ=obj obj/test.o
 
